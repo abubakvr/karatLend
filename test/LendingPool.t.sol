@@ -111,7 +111,7 @@ contract LendingPoolTest is Test {
         assertEq(token.balanceOf(alice), balanceBefore + withdrawAmount);
     }
 
-    function testFailWithdrawTooMuch() public {
+    function test_RevertWhen_WithdrawingTooMuch() public {
         uint256 depositAmount = 100 * 10 ** 18;
         uint256 withdrawAmount = 200 * 10 ** 18;
 
@@ -122,20 +122,24 @@ contract LendingPoolTest is Test {
         lendingPool.deposit(address(token), depositAmount);
 
         // Try to withdraw more than deposited (should fail)
+        vm.expectRevert("Insufficient balance");
         lendingPool.withdraw(address(token), withdrawAmount);
 
         vm.stopPrank();
     }
 
-    function testFailDepositZeroAmount() public {
+    function test_RevertWhen_DepositingZeroAmount() public {
         vm.startPrank(alice);
         token.approve(address(lendingPool), 0);
+
+        vm.expectRevert("Amount must be greater than 0");
         lendingPool.deposit(address(token), 0);
         vm.stopPrank();
     }
 
-    function testFailDepositInvalidToken() public {
+    function test_RevertWhen_DepositingInvalidToken() public {
         vm.startPrank(alice);
+        vm.expectRevert("Invalid token");
         lendingPool.deposit(address(0), 100 * 10 ** 18);
         vm.stopPrank();
     }
