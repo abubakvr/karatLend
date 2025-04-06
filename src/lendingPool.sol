@@ -11,9 +11,9 @@ contract LendingPool {
 
     /// @notice Track which tokens user has deposited at least once
     mapping(address => address[]) public userTokensSupplied;
-    
+
     mapping(address => mapping(address => bool)) public hasDepositedToken;
-    
+
     // Total supply & borrow per user per token
     mapping(address => mapping(address => uint256)) public userBorrowed;
 
@@ -80,10 +80,7 @@ contract LendingPool {
     function withdraw(address token, uint256 amount) external {
         require(amount > 0, "Amount must be greater than zero");
         require(token != address(0), "Invalid token address");
-        require(
-            userSupplied[msg.sender][token] >= amount,
-            "Insufficient balance"
-        );
+        require(userSupplied[msg.sender][token] >= amount, "Insufficient balance");
 
         // Update the user's balance before transfer
         userSupplied[msg.sender][token] -= amount;
