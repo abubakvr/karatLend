@@ -1,66 +1,74 @@
-## Foundry
+# 🪙 KaratLend – A Minimal DeFi Lending Pool
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+KaratLend is a minimal decentralized lending pool built with Solidity, Foundry, and OpenZeppelin. It supports multiple tokens, dynamic interest rates based on pool utilization, flash loans, and even NFT collateral.
 
-Foundry consists of:
+---
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+## 🚀 Features
 
-## Documentation
+- ✅ Supply and borrow ERC-20 tokens
+- 📈 Dynamic interest rates based on utilization
+- 💰 Flash loan support
+- 🖼️ NFT as collateral (experimental)
+- 🔐 Built with OpenZeppelin security standards
 
-https://book.getfoundry.sh/
+---
 
-## Usage
+## 🛠️ Installation
 
-### Build
+```bash
+git clone https://github.com/yourusername/karatlend.git
+cd karatlend
 
-```shell
-$ forge build
+# Install Foundry dependencies
+forge install OpenZeppelin/openzeppelin-contracts --no-commit
 ```
 
-### Test
+---
 
-```shell
-$ forge test
+## 📁 Project Structure
+
+```
+karatlend/
+├── src/
+│   └── LendingPool.sol
+├── test/
+│   └── LendingPool.t.sol
+├── foundry.toml
+└── lib/
+    └── openzeppelin-contracts/
 ```
 
-### Format
+---
 
-```shell
-$ forge fmt
+## 🧪 Running Tests
+
+```bash
+forge test
 ```
 
-### Gas Snapshots
+---
 
-```shell
-$ forge snapshot
-```
+## 🧾 Smart Contract Overview
 
-### Anvil
+### `LendingPool.sol`
 
-```shell
-$ anvil
-```
+| Function      | Description                                                     |
+| ------------- | --------------------------------------------------------------- |
+| `supply()`    | Users deposit tokens into the pool                              |
+| `borrow()`    | Users borrow tokens (against supplied tokens or NFT collateral) |
+| `repay()`     | Users repay borrowed tokens                                     |
+| `withdraw()`  | Withdraw deposited tokens if not locked                         |
+| `flashLoan()` | Perform instant, no-collateral loans                            |
 
-### Deploy
+---
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
+## 📄 License
 
-### Cast
+MIT
 
-```shell
-$ cast <subcommand>
-```
+---
 
-### Help
+## ✨ Author
 
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+Made with 💛 by [Abubakar Ibrahim](https://abubakar.life)
