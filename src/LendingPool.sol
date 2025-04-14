@@ -54,6 +54,25 @@ contract LendingPool {
     }
 
     /**
+     * @notice Withdraw ERC20 tokens from the lending pool
+     * @param token Address of the ERC20 token to withdraw
+     * @param amount Amount of tokens to withdraw
+     */
+    function withdraw(address token, uint256 amount) external {
+        require(amount > 0, "Amount must be greater than zero");
+        require(token != address(0), "Invalid token address");
+        require(userSupplied[msg.sender][token] >= amount, "Insufficient balance");
+
+        // Update the user's balance before transfer
+        userSupplied[msg.sender][token] -= amount;
+
+        // Transfer tokens back to the user
+        IERC20(token).transfer(msg.sender, amount);
+
+        emit Withdrawn(msg.sender, token, amount);
+    }
+
+      /**
      * @notice Get number of unique tokens a user has supplied
      * @param user Address of the user
      * @return uint256 Number of unique tokens supplied by the user
@@ -73,21 +92,24 @@ contract LendingPool {
     }
 
     /**
-     * @notice Withdraw ERC20 tokens from the lending pool
-     * @param token Address of the ERC20 token to withdraw
-     * @param amount Amount of tokens to withdraw
+     * @notice Get the balance of a specific token for a user
+     * @param user Address of the user
+     * @param token Address of the token
+     * @return uint256 The balance of the token for the user
      */
-    function withdraw(address token, uint256 amount) external {
-        require(amount > 0, "Amount must be greater than zero");
-        require(token != address(0), "Invalid token address");
-        require(userSupplied[msg.sender][token] >= amount, "Insufficient balance");
+    function getUserBalance(address user, address token) external view returns (uint256) {
+        require(user != address(0), "User address is required");
+        require(token != address(0), "User address is required");
+        return userSupplied[user][token];
+    }
 
-        // Update the user's balance before transfer
-        userSupplied[msg.sender][token] -= amount;
-
-        // Transfer tokens back to the user
-        IERC20(token).transfer(msg.sender, amount);
-
-        emit Withdrawn(msg.sender, token, amount);
+    /**
+     * @notice Get the total balance of a specific token in the lending pool
+     * @param token Address of the token
+     * @return uint256 The total balance of the token in the lending pool
+     */
+    function getTokenBalance(address token) external view returns (uint256) {
+        require(token != address(0), "Token address is required");
+        return IERC20(token).balanceOf(address(this));
     }
 }
